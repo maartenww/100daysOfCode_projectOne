@@ -1,3 +1,31 @@
 Progress log:
-Day1:
-  Finished the window and the ability to close it.
+
+LEGEND:
+'+' = New feature
+
+Day1:  (1 hour)
+  + Finished the window and the ability to close it.
+
+
+Day2: (3.5 hours)
+GOALS: menu, movement, background
+Movement: Partially done (Left and right movement)
+Menu: didn't get to it
+Background: Partially done (Black background)
+
+  + Added a yellow cube as character and the ability to move left and right.
+
+NOTE:
+      In earlier versions of the code you also had the ability to move up and down but then it would be a top-down view game
+      instead of a 2d platformer where you usually look at the game sideways.
+      And with me trying to add jumping and acceleration this significantly halted my progress.
+      However I did learn a thing or two.
+
+Thoughts:
+      This day was stressful as I had some problems with trying to get vectors to work.
+      Making my program more unstable than earlier versions.
+
+
+
+
+
