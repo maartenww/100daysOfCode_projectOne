@@ -10,9 +10,14 @@ pygame.display.set_caption('Aplatformer')
 clock = pygame.time.Clock()
 
 class Game:
-
     def __init__(self):
         self.running = True
+
+    def handle(self, event, player_1):
+        if event.type == pygame.QUIT:
+            self.running = False
+        else:
+            player_1.handle(event)
 
     def border_col(self, player_1):
         #Border collision
@@ -33,8 +38,8 @@ class Game:
         self.vcolon = myFont.render('v: ', False, (white))
 
     def update_game(self, player_1):
-        gameDisplay.fill(black)
         clock.tick(FPS)
+        gameDisplay.fill(black)
         gameDisplay.blit(self.xcolon, (0, 0))
         gameDisplay.blit(self.actual_x, (25, 0))
         gameDisplay.blit(self.ycolon, (0, 30))
@@ -43,13 +48,10 @@ class Game:
         gameDisplay.blit(self.actual_a, (25, 60))
         gameDisplay.blit(self.vcolon, (0, 90))
         gameDisplay.blit(self.actual_v, (25, 90))
-        #pygame.draw.rect(gameDisplay, player_1.player_color,
-                         #(player_1.player_pos.x, player_1.player_pos.y, player_1.player_width,
-                          #player_1.player_height))
         all_sprites.draw(gameDisplay)
-        Player.move_player(player_1)
         Player.update_player(player_1)
         pygame.display.update()
+        #print( g.running)
 
     def run(self, player_1):
         self.border_col(player_1)
@@ -61,42 +63,12 @@ g = Game()
 Player_1 = Player(40, 40, yellow)
 
 def main():
-
-    # Gameloop
-    #while not gameExit:
-        # Quit event
-        #for event in pygame.event.get():
-            #Player.update_player(Player_1)
-            #if (event.type == pygame.QUIT):
-                #gameExit = True
-
-            # Player movement
-            #if (event.type == pygame.KEYDOWN):
-                #if (event.key == pygame.K_d):
-                    #Player_1.player_acc = PLAYER_ACC
-
-                #if (event.key == pygame.K_a):
-                    #Player_1.player_acc = -PLAYER_ACC
-
-            # Player movement 2.0
-            #if (event.type == pygame.KEYUP):
-                #if (event.key == pygame.K_d):
-                    #Player_1.player_acc = 0
-
-                #if (event.key == pygame.K_a):
-                    #Player_1.player_acc = 0
-
-        # Character and text rendering
-        #g.load_text(Player_1)
-        #g.update_game(Player_1)
-    #todo: Make quit event smooth
     while g.running:
         for event in pygame.event.get():
-            if (event.type == pygame.QUIT):
-                g.running = False
+            g.handle(event, Player_1)
         g.run(Player_1)
-    quit()
 
+    quit()
 
 if (__name__ == "__main__"):
     main()
