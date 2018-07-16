@@ -24,22 +24,21 @@ class Player(pygame.sprite.Sprite):
         self.player_acc = 0
         all_sprites.add(self)
 
-    def move_player(self):
-        for event in pygame.event.get():
-            # Player movement
-            if (event.type == pygame.KEYDOWN):
-                if (event.key == pygame.K_d):
-                    self.player_acc = PLAYER_ACC
+    def handle(self, event):
+        # Player movement
+        if (event.type == pygame.KEYDOWN):
+            if (event.key == pygame.K_d):
+                self.player_acc = PLAYER_ACC
 
-                if (event.key == pygame.K_a):
-                    self.player_acc = -PLAYER_ACC
+            if (event.key == pygame.K_a):
+                self.player_acc = -PLAYER_ACC
 
-            if (event.type == pygame.KEYUP):
-                if (event.key == pygame.K_d):
-                    self.player_acc = 0
+        if (event.type == pygame.KEYUP):
+            if (event.key == pygame.K_d):
+                self.player_acc = 0
 
-                if (event.key == pygame.K_a):
-                    self.player_acc = 0
+            if (event.key == pygame.K_a):
+                self.player_acc = 0
 
     def update_player(self):
         # Draw player
