@@ -30,12 +30,17 @@ class Game:
         # Text
         self.actual_x = myFont.render(str(int(player_1.player_pos.x)), False, (white))
         self.actual_y = myFont.render(str(int(player_1.player_pos.y)), False, (white))
-        self.actual_a = myFont.render(str(float(player_1.player_acc)), False, (white))
-        self.actual_v = myFont.render(str(int(player_1.player_vel)), False, (white))
+        self.actual_a = myFont.render(str(float(player_1.player_acc.x)), False, (white))
+        self.actual_v = myFont.render(str(int(player_1.player_vel.x)), False, (white))
         self.xcolon = myFont.render('x: ', False, (white))
         self.ycolon = myFont.render('y: ', False, (white))
         self.acolon = myFont.render('a: ', False, (white))
         self.vcolon = myFont.render('v: ', False, (white))
+
+    def sprite_col(self, player_1):
+        sprites_hit = pygame.sprite.spritecollide(player_1, platform_sprites, False)
+        #if sprites_hit:
+            #player_1.rect.y = 10
 
     def update_game(self, player_1):
         clock.tick(FPS)
@@ -49,9 +54,10 @@ class Game:
         gameDisplay.blit(self.vcolon, (0, 90))
         gameDisplay.blit(self.actual_v, (25, 90))
         all_sprites.draw(gameDisplay)
+        #todo: fix the sprite collision part "AttributeError: 'pygame.math.Vector2' object has no attribute 'colliderect'"???
+        self.sprite_col(player_1)
         Player.update_player(player_1)
         pygame.display.update()
-        #print( g.running)
 
     def run(self, player_1):
         self.border_col(player_1)
@@ -61,6 +67,7 @@ class Game:
 
 g = Game()
 Player_1 = Player(40, 40, yellow)
+platform_1 = Platform(screen_width, 40, red, 0, screen_height-40)
 
 def main():
     while g.running:
