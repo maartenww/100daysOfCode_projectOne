@@ -47,7 +47,9 @@ class Player(pygame.sprite.Sprite):
         self.player_vel.y += self.player_acc.y
         self.player_pos.y += self.player_vel.y + self.player_acc.y * .5
         # Acceleration
-        self.rect = self.player_pos
+        #self.rect = self.player_pos
+        self.rect.x = self.player_pos.x
+        self.rect.y = self.player_pos.y
         self.player_vel.x += self.player_acc.x
         self.player_pos.x += self.player_vel.x + self.player_acc.x * .5
         # Friction
