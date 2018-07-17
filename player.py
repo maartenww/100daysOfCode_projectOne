@@ -3,6 +3,8 @@ import pygame
 
 vec = pygame.math.Vector2
 all_sprites = pygame.sprite.Group()
+player_sprites = pygame.sprite.Group()
+platform_sprites = pygame.sprite.Group()
 
 # Player Class
 class Player(pygame.sprite.Sprite):
@@ -15,52 +17,61 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([player_width, player_height])
         self.image.fill(player_color)
-        self.player_height = player_height
         self.rect = self.image.get_rect()
-        # todo: Make y start in middle of screen
-        self.player_pos = vec(0, screen_height / 2)
-        self.player_color = player_color
-        self.player_vel = 0
-        self.player_acc = 0
+        self.player_pos = vec(screen_width / 2, screen_height / 2)
+        self.player_vel = vec(0, 0)
+        self.player_acc = vec(0, 0.5)
+        self.rect.x = self.player_pos.x
+        self.rect.y = self.player_pos.y
         all_sprites.add(self)
+        player_sprites.add(self)
 
     def handle(self, event):
         # Player movement
         if (event.type == pygame.KEYDOWN):
             if (event.key == pygame.K_d):
-                self.player_acc = PLAYER_ACC
+                self.player_acc.x = PLAYER_ACC
 
             if (event.key == pygame.K_a):
-                self.player_acc = -PLAYER_ACC
+                self.player_acc.x = -PLAYER_ACC
 
         if (event.type == pygame.KEYUP):
             if (event.key == pygame.K_d):
-                self.player_acc = 0
+                self.player_acc.x = 0
 
             if (event.key == pygame.K_a):
-                self.player_acc = 0
+                self.player_acc.x = 0
 
     def update_player(self):
-        # Draw player
-        #pygame.draw.rect(gameDisplay, self.player_color,
-                         #(self.player_pos.x, self.player_pos.y, self.player_width,
-                          #self.player_height))
-
-        # Border collision
-        #if (self.player_pos.x > (screen_width - self.player_width)):
-            #self.player_pos.x = screen_width - self.player_width
-        #elif (self.player_pos.x < 0):
-            #self.player_pos.x = 0
-
+        # Gravity
+        self.player_vel.y += self.player_acc.y
+        self.player_pos.y += self.player_vel.y + self.player_acc.y * .5
         # Acceleration
-        self.player_pos = self.rect
-        self.player_vel += self.player_acc
-        self.player_pos.x += self.player_vel + self.player_acc * .5
+        self.rect = self.player_pos
+        self.player_vel.x += self.player_acc.x
+        self.player_pos.x += self.player_vel.x + self.player_acc.x * .5
         # Friction
-        self.player_acc += (self.player_vel * -PLAYER_FRIC) / 1000
-        if (self.player_vel > -.1) and (.1 > self.player_vel):
-            self.player_acc = 0
-            self.player_vel = 0
-        elif(self.player_vel > 15) and (-15 > self.player_vel):
-            self.player_vel = 15
-            self.player_acc = 15
+        self.player_acc.x += (self.player_vel.x * -PLAYER_FRIC) / 1000
+        if (self.player_vel.x > -.1) and (.1 > self.player_vel.x):
+            self.player_acc.x = 0
+            self.player_vel.x = 0
+        elif(self.player_vel.x > 15) and (-15 > self.player_vel.x):
+            self.player_vel.x = 15
+            self.player_acc.x = 15
+
+
+class Platform(pygame.sprite.Sprite):
+    platform_width = screen_width
+    platform_height = 40
+    platform_color = red
+
+    def __init__(self, platform_width, platform_height, platform_color,x ,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([platform_width, platform_height])
+        self.image.fill(platform_color)
+        self.rect = self.image.get_rect()
+        self.platform_pos = vec(0, screen_height)
+        all_sprites.add(self)
+        platform_sprites.add(self)
+        self.rect.x = x
+        self.rect.y = y
