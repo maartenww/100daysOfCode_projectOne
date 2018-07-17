@@ -39,8 +39,13 @@ class Game:
 
     def sprite_col(self, player_1):
         sprites_hit = pygame.sprite.spritecollide(player_1, platform_sprites, False)
-        #if sprites_hit:
-            #player_1.rect.y = 10
+        platform_sprites_1 = []
+        for item in platform_sprites:
+            platform_sprites_1.append(item)
+        if sprites_hit:
+            player_1.player_vel.y = 0
+            player_1.player_acc.y = 0
+            player_1.rect.y = platform_sprites_1[0].rect.top + 1
 
     def update_game(self, player_1):
         clock.tick(FPS)
@@ -54,8 +59,7 @@ class Game:
         gameDisplay.blit(self.vcolon, (0, 90))
         gameDisplay.blit(self.actual_v, (25, 90))
         all_sprites.draw(gameDisplay)
-        #todo: fix the sprite collision part "AttributeError: 'pygame.math.Vector2' object has no attribute 'colliderect'"???
-        #self.sprite_col(player_1)
+        self.sprite_col(player_1)
         Player.update_player(player_1)
         pygame.display.update()
 
@@ -76,3 +80,6 @@ def main():
         g.run(Player_1)
 
     quit()
+
+if (__name__ == "__main__"):
+    main()
