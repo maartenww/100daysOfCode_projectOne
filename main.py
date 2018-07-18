@@ -37,15 +37,17 @@ class Game:
         self.acolon = myFont.render('a: ', False, (white))
         self.vcolon = myFont.render('v: ', False, (white))
 
+
+    #todo: Fix buggy standing on platform
     def sprite_col(self, player_1):
         sprites_hit = pygame.sprite.spritecollide(player_1, platform_sprites, False)
         platform_sprites_1 = []
         for item in platform_sprites:
             platform_sprites_1.append(item)
         if sprites_hit:
-            player_1.player_vel.y = 0
-            player_1.player_acc.y = 0
-            player_1.rect.y = platform_sprites_1[0].rect.top + 1
+            player_1.player_pos.y = (sprites_hit[0].rect.top - 50)
+            player_1.player_vel.y -= PLAYER_GRAVITY
+
 
     def update_game(self, player_1):
         clock.tick(FPS)
