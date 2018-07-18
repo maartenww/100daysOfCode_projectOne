@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.player_pos = vec(screen_width / 2, screen_height / 2)
         self.player_vel = vec(0, 0)
-        self.player_acc = vec(0, 0.5)
+        self.player_acc = vec(0, PLAYER_GRAVITY)
         self.rect.x = self.player_pos.x
         self.rect.y = self.player_pos.y
         all_sprites.add(self)
@@ -35,19 +35,26 @@ class Player(pygame.sprite.Sprite):
             if (event.key == pygame.K_a):
                 self.player_acc.x = -PLAYER_ACC
 
+            if (event.key == pygame.K_w):
+                self.jump()
+
         if (event.type == pygame.KEYUP):
             if (event.key == pygame.K_d):
                 self.player_acc.x = 0
 
             if (event.key == pygame.K_a):
                 self.player_acc.x = 0
+    #todo: make it so that you can only jump on a platform
+    
+    def jump(self):
+        self.player_vel.y = -10
+
 
     def update_player(self):
         # Gravity
         self.player_vel.y += self.player_acc.y
         self.player_pos.y += self.player_vel.y + self.player_acc.y * .5
         # Acceleration
-        #self.rect = self.player_pos
         self.rect.x = self.player_pos.x
         self.rect.y = self.player_pos.y
         self.player_vel.x += self.player_acc.x
@@ -57,9 +64,9 @@ class Player(pygame.sprite.Sprite):
         if (self.player_vel.x > -.1) and (.1 > self.player_vel.x):
             self.player_acc.x = 0
             self.player_vel.x = 0
-        elif(self.player_vel.x > 15) and (-15 > self.player_vel.x):
-            self.player_vel.x = 15
-            self.player_acc.x = 15
+        elif(self.player_vel.x > 10) and (-10 > self.player_vel.x):
+            self.player_vel.x = 10
+            self.player_acc.x = 10
 
 
 class Platform(pygame.sprite.Sprite):
