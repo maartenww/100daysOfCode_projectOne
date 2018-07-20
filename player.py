@@ -1,5 +1,6 @@
 from settings import *
 import pygame
+import time
 
 vec = pygame.math.Vector2
 all_sprites = pygame.sprite.Group()
@@ -23,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.player_acc = vec(0, PLAYER_GRAVITY)
         self.rect.x = self.player_pos.x
         self.rect.y = self.player_pos.y
+        self.can_jump = False
         all_sprites.add(self)
         player_sprites.add(self)
 
@@ -38,16 +40,29 @@ class Player(pygame.sprite.Sprite):
             if (event.key == pygame.K_w):
                 self.jump()
 
-        if (event.type == pygame.KEYUP):
+        elif (event.type == pygame.KEYUP):
             if (event.key == pygame.K_d):
                 self.player_acc.x = 0
 
             if (event.key == pygame.K_a):
                 self.player_acc.x = 0
-    #todo: make it so that you can only jump on a platform
-    
+
     def jump(self):
-        self.player_vel.y = -10
+        if self.can_jump == True:
+            self.player_vel.y = -10
+
+    #todo: Fix buggy standing on platform (At higher y-as velocity u sink thru platform)
+    def sprite_col(self):
+        list_of_sprites_hit = pygame.sprite.spritecollide(self, platform_sprites, False)
+        platform_sprites_1 = []
+        for item in platform_sprites:
+            platform_sprites_1.append(item)
+        if list_of_sprites_hit:
+            self.player_pos.y = (list_of_sprites_hit[0].rect.top - 50)
+            self.player_vel.y -= (PLAYER_GRAVITY) #* (self.player_vel.y)) the * (self.player_vel.y)) part is temporary delete it for smoother gameplay
+            self.can_jump = True
+        elif not list_of_sprites_hit:
+            self.can_jump = False
 
 
     def update_player(self):
@@ -64,15 +79,16 @@ class Player(pygame.sprite.Sprite):
         if (self.player_vel.x > -.1) and (.1 > self.player_vel.x):
             self.player_acc.x = 0
             self.player_vel.x = 0
-        elif(self.player_vel.x > 10) and (-10 > self.player_vel.x):
+        elif(self.player_vel.x > 10):
             self.player_vel.x = 10
-            self.player_acc.x = 10
+        elif(self.player_vel.x < -10):
+            self.player_vel.x = -10
 
 
 class Platform(pygame.sprite.Sprite):
     platform_width = screen_width
     platform_height = 40
-    platform_color = red
+    platform_color = ground
 
     def __init__(self, platform_width, platform_height, platform_color,x ,y):
         pygame.sprite.Sprite.__init__(self)
