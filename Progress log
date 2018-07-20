@@ -101,6 +101,22 @@ Day 11:
 Goals: Fixing bugs / making game smoother (This was same goal for day 9 btw)
 
 Fixing bugs:
-I got a maximum speed now fixed.
+I got a maximum speed now fixed.(first 10 minutes)
+
+Smoother: So one major thing I tried to fix is the movement to instantly go to left and right because
+how it is in my code: If you stop holding down the left or right key the acceleration instantly goes to 0 (which makes sense)
+but because the code can't detect fast switch between a or d keys I cannot make that smooth transition of left to right. (Has to do with how the main code works with
+time and key detection which means I would have to rewrite the program and it goes way over of what I currently know.
+So in conclusion I cannot fix this. (Although I do know the problem so that's a good pass for me) (First 20 minutes)
+
+Make it so that u can only jump on a platform:
+Done! In 25 minutes (First 45 minutes)
+
+
+
+
+
+
+
 
 
