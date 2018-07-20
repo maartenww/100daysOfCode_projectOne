@@ -37,21 +37,9 @@ class Game:
         self.acolon = myFont.render('a: ', False, (white))
         self.vcolon = myFont.render('v: ', False, (white))
 
-
-    #todo: Fix buggy standing on platform
-    def sprite_col(self, player_1):
-        sprites_hit = pygame.sprite.spritecollide(player_1, platform_sprites, False)
-        platform_sprites_1 = []
-        for item in platform_sprites:
-            platform_sprites_1.append(item)
-        if sprites_hit:
-            player_1.player_pos.y = (sprites_hit[0].rect.top - 50)
-            player_1.player_vel.y -= PLAYER_GRAVITY
-
-
     def update_game(self, player_1):
         clock.tick(FPS)
-        gameDisplay.fill(black)
+        gameDisplay.fill(background_color)
         gameDisplay.blit(self.xcolon, (0, 0))
         gameDisplay.blit(self.actual_x, (25, 0))
         gameDisplay.blit(self.ycolon, (0, 30))
@@ -61,7 +49,7 @@ class Game:
         gameDisplay.blit(self.vcolon, (0, 90))
         gameDisplay.blit(self.actual_v, (25, 90))
         all_sprites.draw(gameDisplay)
-        self.sprite_col(player_1)
+        Player.sprite_col(player_1)
         Player.update_player(player_1)
         pygame.display.update()
 
@@ -73,14 +61,15 @@ class Game:
 
 g = Game()
 Player_1 = Player(40, 40, yellow)
-platform_1 = Platform(screen_width, 40, red, 0, screen_height-40)
+platform_1 = Platform(screen_width, 40, ground, 0, screen_height-40)
+platform_2 = Platform(100, 40, ground, 100, 500)
 
 def main():
     while g.running:
         for event in pygame.event.get():
             g.handle(event, Player_1)
         g.run(Player_1)
-
+    pygame.quit()
     quit()
 
 if (__name__ == "__main__"):
